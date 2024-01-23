@@ -1,13 +1,11 @@
-import Header from "../../components/Header/Header";
+import PurchaseWizard from "../../components/PurchaseWizard/PurchaseWizard";
 import { useAuth } from "../../contexts/AuthContext";
-import "./Home.css";
 
-function Home() {
+function Accounting() {
   const { session } = useAuth();
 
   return (
-    <div class="home">
-      <Header />
+    <div class="">
       <h1>Home</h1>
       <h3>Identity ID: {session()?.identity.id}</h3>
       <h3>
@@ -15,8 +13,10 @@ function Home() {
           " " +
           session()?.identity.traits.name.last}
       </h3>
+      <br />
+      <PurchaseWizard />
     </div>
   );
 }
 
-export default Home;
+export default Accounting;
