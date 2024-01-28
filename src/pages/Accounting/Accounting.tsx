@@ -1,8 +1,26 @@
 import PurchaseWizard from "../../components/PurchaseWizard/PurchaseWizard";
 import { useAuth } from "../../contexts/AuthContext";
+import { Configuration } from "../../shared/types/Configuration";
+import { createEffect, createSignal } from "solid-js";
+import { GetConfig } from "../../api/venusApi";
 
 function Accounting() {
   const { session } = useAuth();
+
+  const [config, updateConfig] = createSignal<Configuration>({
+    currencies: [],
+    units: [],
+  });
+
+  createEffect(() => {
+    GetConfig().then((res) => {
+      updateConfig({
+        ...config(),
+        units: res.units,
+        currencies: res.currencies,
+      });
+    });
+  });
 
   return (
     <div class="">
@@ -14,7 +32,10 @@ function Accounting() {
           session()?.identity.traits.name.last}
       </h3>
       <br />
-      <PurchaseWizard />
+      <PurchaseWizard units={config().units} currencies={config().currencies} />
+      {config().units.map((u) => (
+        <span>{u.code}</span>
+      ))}
     </div>
   );
 }

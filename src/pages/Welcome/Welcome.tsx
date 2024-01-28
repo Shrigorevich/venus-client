@@ -4,7 +4,10 @@ function Welcome() {
       <div class="text-white text-center pb-32">
         <h1 class="text-5xl font-bold my-2">Welcome</h1>
         <div>
-          <a href="http://127.0.0.1:4433/self-service/registration/browser">
+          <a
+            class="mr-2"
+            href="http://127.0.0.1:4433/self-service/registration/browser"
+          >
             Sign On
           </a>
           <a href="http://127.0.0.1:4433/self-service/login/browser">Login</a>

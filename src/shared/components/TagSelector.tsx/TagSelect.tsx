@@ -5,7 +5,10 @@ import { createSignal } from "solid-js";
 import TextInput from "../TextInput";
 import InputBox from "../InputBox";
 
-function TagSelect(props: { options: TagType[] }) {
+function TagSelect(props: {
+  options: TagType[];
+  updateTags: (tags: TagType[]) => void;
+}) {
   const [selected, setSelected] = createStore<TagType[]>([]);
   const [options, setOptions] = createSignal<TagType[]>(props.options);
   const [filter, setFilter] = createSignal<string>("");
@@ -31,12 +34,14 @@ function TagSelect(props: { options: TagType[] }) {
     const tag = options().find((x) => x.id == id);
     setSelected([...selected, tag as TagType]);
     setOptions(options().filter((x) => x.id !== id));
+    props.updateTags(selected);
   };
 
   const removeTag = (id: number) => {
     const tag = selected.find((x) => x.id == id);
     setSelected([...selected.filter((x) => x.id !== id)]);
     setOptions([...options(), tag as TagType]);
+    props.updateTags(selected);
   };
 
   return (

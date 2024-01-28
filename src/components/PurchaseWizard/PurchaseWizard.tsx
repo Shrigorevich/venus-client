@@ -1,37 +1,24 @@
 import { createStore } from "solid-js/store";
 import { PurchaseType } from "./PurchaseType";
-import MoneyInput from "../../shared/components/MoneyInput";
 import TextInput from "../../shared/components/TextInput";
 import NumberInput from "../../shared/components/NumberInput";
 import InputBox from "../../shared/components/InputBox";
 import SelectInput from "../../shared/components/SelectInput";
 import TagSelect from "../../shared/components/TagSelector.tsx/TagSelect";
+import { Configuration } from "../../shared/types/Configuration";
+import { createEffect } from "solid-js";
+import { Currency } from "../../shared/types/Currency";
+import { Unit } from "../../shared/types/Unit";
+import { TagType } from "../../shared/types/TagType";
 
-function PurchaseWizard() {
-  //Mocked
-  const currencies = [
-    { id: 1, code: "UAH", name: "Ukrainian hryvnia" },
-    { id: 2, code: "USD", name: "US Dollar" },
-  ];
-  //Mocked
-  const units = [
-    { id: 1, code: "kg", description: "Kilogram" },
-    { id: 2, code: "g", description: "Gram" },
-    { id: 3, code: "L", description: "Liter" },
-    { id: 4, code: "ml", description: "milliliter" },
-  ];
-  //Mocked
-  const tags = [
-    { id: 1, name: "food1" },
-    { id: 2, name: "taxes2" },
-    { id: 3, name: "rent3" },
-    { id: 4, name: "food4" },
-    { id: 5, name: "taxes5" },
-    { id: 6, name: "rent6" },
-    { id: 7, name: "food7" },
-    { id: 8, name: "taxes8" },
-    { id: 9, name: "rent9" },
-  ];
+function PurchaseWizard(props: {
+  units: Unit[];
+  currencies: Currency[];
+  tags: TagType[];
+}) {
+  createEffect(() => {
+    console.log("Config: " + props.currencies);
+  });
 
   const [purchase, updatePurchase] = createStore<PurchaseType>({
     name: "",
@@ -57,6 +44,10 @@ function PurchaseWizard() {
     console.log(purchase);
   };
 
+  const updateTags = (tags: TagType[]) => {
+    updatePurchase({ ...purchase, tagIds: tags.map((x) => x.id) });
+  };
+
   return (
     <div class="p-2 max-w-96">
       <form id="purchase-wizard">
@@ -77,7 +68,7 @@ function PurchaseWizard() {
                 form="purchase-wizard"
                 onInput={onInput}
                 min={0}
-                maxWidth="max-w-[136px]"
+                maxWidth="max-w-[132px]"
               />
             </InputBox>
           </div>
@@ -88,18 +79,21 @@ function PurchaseWizard() {
                 form="purchase-wizard"
                 onInput={onInput}
                 min={0}
-                maxWidth="max-w-[136px]"
+                maxWidth="max-w-[132px]"
               />
             </InputBox>
           </div>
           <div class="basis-1/5">
-            <InputBox label="Unit">
+            <InputBox label="Currency">
               <SelectInput
-                name="unitId"
+                name="currencyId"
                 value={1}
-                options={units.map((c) => ({ value: c.id, name: c.code }))}
+                options={props.currencies.map((c) => ({
+                  value: c.id,
+                  name: c.code,
+                }))}
                 onChange={onSelect}
-                maxWidth="max-w-[72px]"
+                maxWidth="max-w-[80px]"
               />
             </InputBox>
           </div>
@@ -121,7 +115,10 @@ function PurchaseWizard() {
               <SelectInput
                 name="unitId"
                 value={2}
-                options={units.map((c) => ({ value: c.id, name: c.code }))}
+                options={props.units.map((c) => ({
+                  value: c.id,
+                  name: c.code,
+                }))}
                 onChange={onSelect}
               />
             </InputBox>
@@ -137,7 +134,7 @@ function PurchaseWizard() {
           />
         </InputBox>
 
-        <TagSelect options={tags} />
+        <TagSelect options={props.tags} updateTags={updateTags} />
         {/* <button type="submit">Submit</button> */}
       </form>
     </div>

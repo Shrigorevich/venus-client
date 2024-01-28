@@ -7,8 +7,8 @@ import {
   Setter,
 } from "solid-js";
 import { GetSession } from "../api/identityApi";
-import { IdentityError } from "../types/identity/IdentityError";
-import { Session } from "../types/identity/Session";
+import { IdentityError } from "../shared/types/identity/IdentityError";
+import { Session } from "../shared/types/identity/Session";
 
 interface AuthContextType {
   session: Accessor<Session | undefined>;

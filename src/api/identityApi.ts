@@ -1,5 +1,5 @@
-import { LogoutFlow } from "../types/identity/LogoutFlow";
-import { SessionResponse } from "../types/identity/SessionResponse";
+import { LogoutFlow } from "../shared/types/identity/LogoutFlow";
+import { SessionResponse } from "../shared/types/identity/SessionResponse";
 
 const baseUrl = import.meta.env.VITE_IDENTITY_URL;
 

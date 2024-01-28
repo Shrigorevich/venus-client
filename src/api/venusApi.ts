@@ -1,4 +1,6 @@
-import { LogoutFlow } from "../types/identity/LogoutFlow";
+import { Configuration } from "../shared/types/Configuration";
+import { Error } from "../shared/types/Error";
+import { LogoutFlow } from "../shared/types/identity/LogoutFlow";
 import axios, { AxiosResponse } from "axios";
 
 const baseUrl = "http://localhost:3999";
@@ -19,5 +21,18 @@ export const GetChallenges = async (): Promise<any> => {
   } catch (exception) {
     console.log("Unhandled exception: " + exception);
     return false;
+  }
+};
+
+export const GetConfig = async (): Promise<Configuration> => {
+  try {
+    var response = await api.get<Configuration>("/configuration");
+    return response.data;
+  } catch (exception) {
+    console.log("Unhandled exception: " + exception);
+    return {
+      currencies: [],
+      units: [],
+    };
   }
 };
